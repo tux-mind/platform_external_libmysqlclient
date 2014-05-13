@@ -35,8 +35,13 @@ extern "C" {
 #define MY_S_ISUID	S_ISUID /* set user id on execution */
 #define MY_S_ISGID	S_ISGID /* set group id on execution */
 #define MY_S_ISVTX	S_ISVTX /* save swapped text even after use */
+#ifndef __BIONIC__
 #define MY_S_IREAD	S_IREAD /* read permission, owner */
 #define MY_S_IWRITE	S_IWRITE	/* write permission, owner */
+#else
+#define MY_S_IREAD      S_IRUSR
+#define MY_S_IWRITE     S_IWUSR
+#endif
 #define MY_S_IEXEC	S_IEXEC /* execute/search permission, owner */
 
 #define MY_S_ISDIR(m)	(((m) & MY_S_IFMT) == MY_S_IFDIR)

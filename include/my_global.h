@@ -881,7 +881,8 @@ typedef char		my_bool; /* Small bool */
 #endif
 
 /* Provide __func__ macro definition for platforms that miss it. */
-#if __STDC_VERSION__ < 199901L
+#ifdef __BIONIC__
+#elif __STDC_VERSION__ < 199901L
 #  if __GNUC__ >= 2
 #    define __func__ __FUNCTION__
 #  else
