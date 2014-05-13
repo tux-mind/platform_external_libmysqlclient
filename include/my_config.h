@@ -314,7 +314,7 @@
 
 #define TIME_WITH_SYS_TIME 1
 
-#define STACK_DIRECTION 1
+#define STACK_DIRECTION -1
 
 #define SYSTEM_TYPE "Linux"
 #define MACHINE_TYPE "armv7-a"
