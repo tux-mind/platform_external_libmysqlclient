@@ -4,15 +4,23 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_CFLAGS:= -DANDROID -DHAVE_CONFIG_H -Dget_tty_password=yassl_mysql_get_tty_password \
--Dget_tty_password_ext=yassl_mysql_get_tty_password_ext -DDBUG_OFF -DHAVE_YASSL \
--DYASSL_PREFIX -DHAVE_OPENSSL -DMULTI_THREADED -ffunction-sections -fdata-sections
+	-Dget_tty_password_ext=yassl_mysql_get_tty_password_ext -DDBUG_OFF -DHAVE_YASSL \
+	-DYASSL_PREFIX -DHAVE_OPENSSL -DMULTI_THREADED -DDISABLE_MYSQL_THREAD_H \
+	-D CLIENT_PROTOCOL_TRACING -ffunction-sections -fdata-sections
 
 LOCAL_C_INCLUDES:= \
 	$(LOCAL_PATH)/androidbuild/include\
 	$(LOCAL_PATH)/include\
 	$(LOCAL_PATH)/extra/yassl/include\
 	$(LOCAL_PATH)/extra/yassl/taocrypt/include\
-	$(LOCAL_PATH)/extra/yassl/taocrypt/mySTL
+	$(LOCAL_PATH)/extra/yassl/taocrypt/mySTL\
+	$(LOCAL_PATH)/mysys\
+	$(LOCAL_PATH)/dbug\
+	$(LOCAL_PATH)/mysys_ssl\
+	$(LOCAL_PATH)/libmysql\
+	$(LOCAL_PATH)/regex\
+	$(LOCAL_PATH)/sql\
+	$(LOCAL_PATH)/string
 LOCAL_SRC_FILES:= \
 	extra/yassl/src/buffer.cpp\
 	extra/yassl/src/cert_wrapper.cpp\
@@ -26,24 +34,7 @@ LOCAL_SRC_FILES:= \
 	extra/yassl/src/yassl_error.cpp\
 	extra/yassl/src/yassl_imp.cpp\
 	extra/yassl/src/yassl_int.cpp\
-	client/get_password.c
-LOCAL_MODULE := libyassl
-
-include $(BUILD_STATIC_LIBRARY)
-
-
-#original path: libs/armeabi-v7a/libtaocrypt.a
-include $(CLEAR_VARS)
-
-LOCAL_CFLAGS:= -DANDROID -DHAVE_CONFIG_H -DDBUG_OFF -DHAVE_YASSL -DYASSL_PREFIX -DHAVE_OPENSSL \
--DMULTI_THREADED -ffunction-sections -fdata-sections
-
-LOCAL_C_INCLUDES:= \
-	$(LOCAL_PATH)/androidbuild/include\
-	$(LOCAL_PATH)/extra/yassl/taocrypt/mySTL\
-	$(LOCAL_PATH)/extra/yassl/taocrypt/include\
-	$(LOCAL_PATH)/include
-LOCAL_SRC_FILES:= \
+	client/get_password.c\
 	extra/yassl/taocrypt/src/aes.cpp\
 	extra/yassl/taocrypt/src/aestables.cpp\
 	extra/yassl/taocrypt/src/algebra.cpp\
@@ -65,22 +56,7 @@ LOCAL_SRC_FILES:= \
 	extra/yassl/taocrypt/src/rsa.cpp\
 	extra/yassl/taocrypt/src/sha.cpp\
 	extra/yassl/taocrypt/src/rabbit.cpp\
-	extra/yassl/taocrypt/src/hc128.cpp
-LOCAL_MODULE := libtaocrypt
-
-include $(BUILD_STATIC_LIBRARY)
-
-
-#original path: libs/armeabi-v7a/libstrings.a
-include $(CLEAR_VARS)
-
-LOCAL_CFLAGS:= -DANDROID -DDISABLE_MYSQL_THREAD_H -DHAVE_CONFIG_H -DDBUG_OFF \
--ffunction-sections -fdata-sections
-
-LOCAL_C_INCLUDES:= \
-	$(LOCAL_PATH)/androidbuild/include\
-	$(LOCAL_PATH)/include
-LOCAL_SRC_FILES:= \
+	extra/yassl/taocrypt/src/hc128.cpp\
 	strings/bchange.c\
 	strings/ctype-big5.c\
 	strings/ctype-bin.c\
@@ -123,22 +99,7 @@ LOCAL_SRC_FILES:= \
 	strings/xml.c\
 	strings/my_strchr.c\
 	strings/strcont.c\
-	strings/strappend.c
-LOCAL_MODULE := libstrings
-
-include $(BUILD_STATIC_LIBRARY)
-
-
-#original path: libs/armeabi-v7a/libmysys.a
-include $(CLEAR_VARS)
-
-LOCAL_CFLAGS:= -DANDROID -DHAVE_CONFIG_H -DDBUG_OFF -ffunction-sections -fdata-sections
-
-LOCAL_C_INCLUDES:= \
-	$(LOCAL_PATH)/androidbuild/include\
-	$(LOCAL_PATH)/include\
-	$(LOCAL_PATH)/mysys
-LOCAL_SRC_FILES:= \
+	strings/strappend.c\
 	mysys/array.c\
 	mysys/charset-def.c\
 	mysys/charset.c\
@@ -228,85 +189,17 @@ LOCAL_SRC_FILES:= \
 	mysys/my_rdtsc.c\
 	mysys/psi_noop.c\
 	mysys/my_syslog.c\
-	mysys/my_alarm.c
-LOCAL_STATIC_LIBRARIES:= libstrings
-
-LOCAL_SHARED_LIBRARIES:= z
-
-LOCAL_MODULE := libmysys
-
-include $(BUILD_STATIC_LIBRARY)
-
-
-#original path: libs/armeabi-v7a/libdbug.a
-include $(CLEAR_VARS)
-
-LOCAL_CFLAGS:= -DANDROID -DHAVE_CONFIG_H -DDBUG_OFF -ffunction-sections -fdata-sections
-
-LOCAL_C_INCLUDES:= \
-	$(LOCAL_PATH)/androidbuild/include\
-	$(LOCAL_PATH)/dbug\
-	$(LOCAL_PATH)/include
-LOCAL_SRC_FILES:= \
-	dbug/dbug.c
-LOCAL_MODULE := libdbug
-
-include $(BUILD_STATIC_LIBRARY)
-
-
-#original path: libs/armeabi-v7a/libvio.a
-include $(CLEAR_VARS)
-
-LOCAL_CFLAGS:= -DANDROID -DHAVE_CONFIG_H -DDBUG_OFF -DHAVE_YASSL -DYASSL_PREFIX -DHAVE_OPENSSL \
--DMULTI_THREADED -ffunction-sections -fdata-sections
-
-LOCAL_C_INCLUDES:= \
-	$(LOCAL_PATH)/androidbuild/include\
-	$(LOCAL_PATH)/include\
-	$(LOCAL_PATH)/extra/yassl/include\
-	$(LOCAL_PATH)/extra/yassl/taocrypt/include
-LOCAL_SRC_FILES:= \
+	mysys/my_alarm.c\
+	dbug/dbug.c\
 	vio/vio.c\
 	vio/viosocket.c\
 	vio/viossl.c\
-	vio/viosslfactories.c
-LOCAL_MODULE := libvio
-
-include $(BUILD_STATIC_LIBRARY)
-
-
-#original path: libs/armeabi-v7a/libregex.a
-include $(CLEAR_VARS)
-
-LOCAL_CFLAGS:= -DANDROID -DHAVE_CONFIG_H -DDBUG_OFF -ffunction-sections -fdata-sections
-
-LOCAL_C_INCLUDES:= \
-	$(LOCAL_PATH)/androidbuild/include\
-	$(LOCAL_PATH)/include
-LOCAL_SRC_FILES:= \
+	vio/viosslfactories.c\
 	regex/regcomp.c\
 	regex/regerror.c\
 	regex/regexec.c\
 	regex/regfree.c\
-	regex/reginit.c
-LOCAL_MODULE := libregex
-
-include $(BUILD_STATIC_LIBRARY)
-
-
-#original path: libs/armeabi-v7a/libmysys_ssl.a
-include $(CLEAR_VARS)
-
-LOCAL_CFLAGS:= -DANDROID -DHAVE_CONFIG_H -DDBUG_OFF -DHAVE_YASSL -DYASSL_PREFIX -DHAVE_OPENSSL \
--DMULTI_THREADED -ffunction-sections -fdata-sections
-
-LOCAL_C_INCLUDES:= \
-	$(LOCAL_PATH)/androidbuild/include\
-	$(LOCAL_PATH)/include\
-	$(LOCAL_PATH)/mysys_ssl\
-	$(LOCAL_PATH)/extra/yassl/include\
-	$(LOCAL_PATH)/extra/yassl/taocrypt/include
-LOCAL_SRC_FILES:= \
+	regex/reginit.c\
 	mysys_ssl/crypt_genhash_impl.cc\
 	mysys_ssl/my_default.cc\
 	mysys_ssl/my_getopt.cc\
@@ -315,31 +208,7 @@ LOCAL_SRC_FILES:= \
 	mysys_ssl/my_sha2.cc\
 	mysys_ssl/my_md5.cc\
 	mysys_ssl/my_rnd.cc\
-	mysys_ssl/my_murmur3.cc
-LOCAL_STATIC_LIBRARIES:= libmysys\
-
-LOCAL_MODULE := libmysys_ssl
-
-include $(BUILD_STATIC_LIBRARY)
-
-
-#original path: libs/armeabi-v7a/libclientlib.a
-include $(CLEAR_VARS)
-
-LOCAL_CPP_EXTENSION := .cc
-LOCAL_CFLAGS:= -DANDROID -DHAVE_CONFIG_H -DDBUG_OFF -DHAVE_YASSL -DYASSL_PREFIX -DHAVE_OPENSSL \
--DMULTI_THREADED -D CLIENT_PROTOCOL_TRACING -ffunction-sections -fdata-sections
-LOCAL_C_INCLUDES:= \
-	$(LOCAL_PATH)/androidbuild/include\
-	$(LOCAL_PATH)/include\
-	$(LOCAL_PATH)/libmysql\
-	$(LOCAL_PATH)/regex\
-	$(LOCAL_PATH)/sql\
-	$(LOCAL_PATH)/strings\
-	$(LOCAL_PATH)/extra/yassl/include\
-	$(LOCAL_PATH)/extra/yassl/taocrypt/include\
-	$(LOCAL_PATH)/extra/yassl/taocrypt/mySTL
-LOCAL_SRC_FILES:= \
+	mysys_ssl/my_murmur3.cc\
 	libmysql/get_password.c\
 	libmysql/libmysql.c\
 	libmysql/errmsg.c\
@@ -350,39 +219,8 @@ LOCAL_SRC_FILES:= \
 	sql/net_serv.cc\
 	sql-common/pack.c\
 	sql/auth/password.c\
-	libmysql/mysql_trace.c
-LOCAL_MODULE := libclientlib
-
-include $(BUILD_STATIC_LIBRARY)
-
-
-#original path: libs/armeabi-v7a/libmysqlclient.a
-include $(CLEAR_VARS)
-
-LOCAL_CFLAGS:= -DANDROID -DHAVE_CONFIG_H -DDBUG_OFF -DHAVE_YASSL -DYASSL_PREFIX -DHAVE_OPENSSL \
--DMULTI_THREADED -D CLIENT_PROTOCOL_TRACING -ffunction-sections -fdata-sections
-
-LOCAL_C_INCLUDES:= \
-	$(LOCAL_PATH)/androidbuild/include\
-	$(LOCAL_PATH)/include\
-	$(LOCAL_PATH)/libmysql\
-	$(LOCAL_PATH)/regex\
-	$(LOCAL_PATH)/sql\
-	$(LOCAL_PATH)/strings\
-	$(LOCAL_PATH)/extra/yassl/include\
-	$(LOCAL_PATH)/extra/yassl/taocrypt/include\
-	$(LOCAL_PATH)/extra/yassl/taocrypt/mySTL
-LOCAL_SRC_FILES:= \
+	libmysql/mysql_trace.c\
 	androidbuild/libmysql/mysqlclient_depends.c
-LOCAL_STATIC_LIBRARIES:= \
-	libclientlib\
-	libdbug\
-	libstrings\
-	libvio\
-	libmysys\
-	libmysys_ssl\
-	libyassl\
-	libtaocrypt
 	
 LOCAL_SHARED_LIBRARIES:= \
 	z
