@@ -433,7 +433,7 @@
 /* #undef WITH_MYISAM_STORAGE_ENGINE */
 /* #undef WITH_HEAP_STORAGE_ENGINE */
 #define WITH_PARTITION_STORAGE_ENGINE 1
-/* #undef WITH_PERFSCHEMA_STORAGE_ENGINE */
+#define WITH_PERFSCHEMA_STORAGE_ENGINE 1
 /* #undef WITH_NDBCLUSTER_STORAGE_ENGINE */
 
 #define DEFAULT_MYSQL_HOME "/media/data/documents/programs/dsploit/dSploit/jni/mysql/androidbuild/../install"
