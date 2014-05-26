@@ -5,7 +5,7 @@ include $(CLEAR_VARS)
 
 LOCAL_CFLAGS:= -DANDROID -DHAVE_CONFIG_H -Dget_tty_password=yassl_mysql_get_tty_password \
 	-Dget_tty_password_ext=yassl_mysql_get_tty_password_ext -DDBUG_OFF -DHAVE_YASSL \
-	-DYASSL_PREFIX -DHAVE_OPENSSL -DMULTI_THREADED -DDISABLE_MYSQL_THREAD_H \
+	-DYASSL_PREFIX -DHAVE_OPENSSL -DMULTI_THREADED \
 	-D CLIENT_PROTOCOL_TRACING -ffunction-sections -fdata-sections
 
 LOCAL_C_INCLUDES:= \
