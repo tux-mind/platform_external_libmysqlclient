@@ -209,7 +209,6 @@ LOCAL_SRC_FILES:= \
 	mysys_ssl/my_md5.cc\
 	mysys_ssl/my_rnd.cc\
 	mysys_ssl/my_murmur3.cc\
-	libmysql/get_password.c\
 	libmysql/libmysql.c\
 	libmysql/errmsg.c\
 	sql-common/client.c\
