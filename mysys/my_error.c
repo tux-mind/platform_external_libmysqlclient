@@ -120,7 +120,7 @@ char *my_strerror(char *buf, size_t len, int nr)
       ! defined _GNU_SOURCE
     strerror_r(nr, buf, len);             /* I can build with or without GNU */
 #elif defined _GNU_SOURCE
-    char *r= strerror_r(nr, buf, len);
+    char *r= (char *)strerror_r(nr, buf, len);
     if (r != buf)                         /* Want to help, GNU? */
       strmake(buf, r, len - 1);           /* Then don't. */
 #else
